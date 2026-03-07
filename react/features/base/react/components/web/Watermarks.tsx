@@ -255,6 +255,12 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _logoLink = JITSI_WATERMARK_LINK;
     }
 
+    // --- DIGITALSCHOOL BRANDING: Force DS logo ---
+    _logoUrl = "libs/ds-logo.webp";
+    _logoLink = "";
+    _showJitsiWatermark = true;
+    // --- END DIGITALSCHOOL BRANDING ---
+
     return {
         _logoLink,
         _logoUrl,

@@ -13,6 +13,7 @@ import {
     TOOLBAR_HEIGHT,
     TOOLBAR_HEIGHT_MOBILE } from '../../constants';
 import { isFilmstripResizable, showGridInVerticalView } from '../../functions.web';
+import { getVirtualScreenshareParticipantOwnerId, isScreenShareParticipantById } from '../../../base/participants/functions';
 
 import Filmstrip from './Filmstrip';
 
@@ -190,12 +191,33 @@ function _mapStateToProps(state: IReduxState, _ownProps: any) {
     }
     }
 
+    // --- PiP CAMERA FEATURE: Filter out camera tiles for screen-sharing users ---
+    const screenShareOwnerIds = new Set<string>();
+
+    for (const pid of remoteParticipants) {
+        if (isScreenShareParticipantById(state, pid)) {
+            screenShareOwnerIds.add(getVirtualScreenshareParticipantOwnerId(pid));
+        }
+    }
+
+    let filteredRemoteParticipants = remoteParticipants;
+
+    if (screenShareOwnerIds.size > 0) {
+        filteredRemoteParticipants = remoteParticipants.filter((pid: string) => {
+            if (isScreenShareParticipantById(state, pid)) {
+                return true;
+            }
+            return !screenShareOwnerIds.has(pid);
+        });
+    }
+    // --- END PiP CAMERA FEATURE ---
+
     return {
         _columns: gridDimensions.columns ?? 1,
         _filmstripHeight: remoteFilmstripHeight,
         _filmstripWidth: remoteFilmstripWidth,
         _hasScroll,
-        _remoteParticipants: remoteParticipants,
+        _remoteParticipants: filteredRemoteParticipants,
         _resizableFilmstrip,
         _rows: gridDimensions.rows ?? 1,
         _thumbnailWidth: _thumbnailSize?.width,

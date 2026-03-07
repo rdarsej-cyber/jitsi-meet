@@ -37,11 +37,7 @@ const statsEmitter = {
      * @returns {void}
      */
     startListeningForStats(conference: IJitsiConference) {
-        conference.on(JitsiConnectionQualityEvents.LOCAL_STATS_UPDATED,
-            (stats: IStats) => this._onStatsUpdated(conference.myUserId(), stats));
-
-        conference.on(JitsiConnectionQualityEvents.REMOTE_STATS_UPDATED,
-            (id: string, stats: IStats) => this._emitStatsUpdate(id, stats));
+        return;
     },
 
     /**

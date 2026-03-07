@@ -38,7 +38,7 @@
     }
 }
 #largeVideoBackgroundContainer {
-    filter: blur(40px);
+    filter: none;
 }
 
 .videocontainer {
@@ -203,8 +203,8 @@
         width: 5px;
         height: 5px;
         border-radius: 50%;
-        -webkit-filter: blur(0.5px);
-        filter: blur(0.5px);
+        -webkit-filter: none;
+        filter: none;
         background: #44A5FF;
     }
 }

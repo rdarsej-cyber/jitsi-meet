@@ -3,7 +3,7 @@
  *
  * @type {number}
  */
-export const DEFAULT_LAST_N = 20;
+export const DEFAULT_LAST_N = -1;
 
 /**
  * The supported video codecs.

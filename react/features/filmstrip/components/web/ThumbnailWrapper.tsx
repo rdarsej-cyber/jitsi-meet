@@ -151,7 +151,7 @@ function _mapStateToProps(state: IReduxState, ownProps: { columnIndex: number;
     // --- PiP CAMERA FEATURE: Filter out camera tiles for users who are screen sharing ---
     let effectiveRemoteParticipants = remoteParticipants;
 
-    if (_currentLayout === LAYOUTS.TILE_VIEW && !stageFilmstrip) {
+    if (!stageFilmstrip) {
         const screenShareOwnerIds = new Set<string>();
 
         for (const pid of remoteParticipants) {
@@ -312,7 +312,7 @@ function _mapStateToProps(state: IReduxState, ownProps: { columnIndex: number;
     }
 
     return {
-        _participantID: remoteParticipants[index]
+        _participantID: effectiveRemoteParticipants[index]
     };
 }
 

@@ -138,19 +138,7 @@ export class LargeVideoBackground extends Component<IProps> {
      * @returns {ReactElement}
      */
     override render() {
-        const {
-            hidden,
-            mirror
-        } = this.props;
-        const classNames = `large-video-background ${mirror ? 'flip-x' : ''} ${hidden ? 'invisible' : ''}`;
-
-        return (
-            <div className = { classNames }>
-                <canvas
-                    id = 'largeVideoBackground'
-                    ref = { this._setCanvasEl } />
-            </div>
-        );
+        return null;
     }
 
     /**

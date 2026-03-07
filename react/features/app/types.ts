@@ -177,6 +177,7 @@ export interface IReduxState {
     'features/visitors': IVisitorsState;
     'features/web-hid': IWebHid;
     'features/whiteboard': IWhiteboardState;
+    'features/teacher-presence': any;
 }
 
 export interface IReloadNowOptions {

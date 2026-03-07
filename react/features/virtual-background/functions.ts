@@ -27,7 +27,7 @@ export function checkBlurSupport() {
  * @returns {boolean} True if virtual background is enabled and false if virtual background is disabled.
  */
 export function checkVirtualBackgroundEnabled(state: IReduxState) {
-    return state['features/base/config'].disableVirtualBackground !== true;
+    return false; // DISABLED FOR CPU
 }
 
 /**
