@@ -20,6 +20,7 @@ import {
     getLocalParticipant,
     getParticipantByIdOrUndefined,
     getScreenshareParticipantIds,
+    getVirtualScreenshareParticipantOwnerId,
     hasRaisedHand,
     isLocalScreenshareParticipant,
     isScreenShareParticipant,
@@ -99,6 +100,11 @@ export interface IProps extends WithTranslation {
      * The audio track related to the participant.
      */
     _audioTrack?: ITrack;
+
+    /**
+     * The camera track for the owner of a screen share participant (for PiP overlay).
+     */
+    _cameraTrack?: ITrack;
 
     /**
      * Indicates whether enlargement of tiles to fill the available space is disabled.
@@ -1213,6 +1219,7 @@ class Thumbnail extends Component<IProps, IState> {
                     shouldDisplayTintBackground = { _shouldDisplayTintBackground }
                     styles = { this._getStyles() }
                     thumbnailType = { _thumbnailType }
+                    cameraTrack = { this.props._cameraTrack }
                     videoTrack = { _videoTrack } />
             );
         }
@@ -1238,6 +1245,18 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
     const _isVirtualScreenshareParticipant = isScreenShareParticipant(participant);
     const tracks = state['features/base/tracks'];
     const _videoTrack = getVideoTrackByParticipant(state, participant);
+
+    // Get camera track for screen share participant's owner (for PiP overlay)
+    let _cameraTrack;
+
+    if (_isVirtualScreenshareParticipant && participant) {
+        const ownerId = getVirtualScreenshareParticipantOwnerId(participant.id);
+        const ownerParticipant = getParticipantByIdOrUndefined(state, ownerId);
+
+        if (ownerParticipant) {
+            _cameraTrack = getVideoTrackByParticipant(state, ownerParticipant);
+        }
+    }
     const _audioTrack = isLocal
         ? getLocalAudioTrack(tracks)
         : getTrackByMediaTypeAndParticipant(tracks, MEDIA_TYPE.AUDIO, id);
@@ -1389,6 +1408,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         _thumbnailType: tileType,
         _videoObjectPosition: getVideoObjectPosition(state, participant?.id),
         _videoTrack,
+        _cameraTrack,
         ...size,
         _gifSrc: mode === 'chat' ? null : gifSrc
     };

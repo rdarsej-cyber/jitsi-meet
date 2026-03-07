@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
 import { getLocalParticipant } from '../../../base/participants/functions';
+import { getVirtualScreenshareParticipantOwnerId, isScreenShareParticipantById } from '../../../base/participants/functions';
 import { getHideSelfView } from '../../../base/settings/functions.any';
 import { LAYOUTS } from '../../../video-layout/constants';
 import { getCurrentLayout } from '../../../video-layout/functions.web';
@@ -146,7 +147,31 @@ function _mapStateToProps(state: IReduxState, ownProps: { columnIndex: number;
     const stageFilmstrip = filmstripType === FILMSTRIP_TYPE.STAGE;
     const sortedActiveParticipants = activeParticipants.sort();
     const remoteParticipants = stageFilmstrip ? sortedActiveParticipants : remote;
-    const remoteParticipantsLength = remoteParticipants.length;
+
+    // --- PiP CAMERA FEATURE: Filter out camera tiles for users who are screen sharing ---
+    let effectiveRemoteParticipants = remoteParticipants;
+
+    if (_currentLayout === LAYOUTS.TILE_VIEW && !stageFilmstrip) {
+        const screenShareOwnerIds = new Set<string>();
+
+        for (const pid of remoteParticipants) {
+            if (isScreenShareParticipantById(state, pid)) {
+                screenShareOwnerIds.add(getVirtualScreenshareParticipantOwnerId(pid));
+            }
+        }
+
+        if (screenShareOwnerIds.size > 0) {
+            effectiveRemoteParticipants = remoteParticipants.filter((pid: string) => {
+                if (isScreenShareParticipantById(state, pid)) {
+                    return true;
+                }
+                return !screenShareOwnerIds.has(pid);
+            });
+        }
+    }
+    // --- END PiP CAMERA FEATURE ---
+
+    const remoteParticipantsLength = effectiveRemoteParticipants.length;
     const localId = getLocalParticipant(state)?.id;
 
     if (_currentLayout === LAYOUTS.TILE_VIEW || _verticalViewGrid || stageFilmstrip) {
@@ -257,7 +282,7 @@ function _mapStateToProps(state: IReduxState, ownProps: { columnIndex: number;
 
         return {
             _filmstripType: filmstripType,
-            _participantID: remoteParticipants[remoteIndex],
+            _participantID: effectiveRemoteParticipants[remoteIndex],
             _horizontalOffset: horizontalOffset,
             _thumbnailWidth: thumbnailWidth
         };

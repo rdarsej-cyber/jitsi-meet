@@ -104,6 +104,11 @@ interface IProps {
      * JitsiTrack instance.
      */
     videoTrack: ITrack;
+
+    /**
+     * The camera track of the screen share owner for PiP overlay.
+     */
+    cameraTrack?: ITrack;
 }
 
 const VirtualScreenshareParticipant = ({
@@ -123,6 +128,7 @@ const VirtualScreenshareParticipant = ({
     shouldDisplayTintBackground,
     styles,
     videoTrack,
+    cameraTrack,
     thumbnailType
 }: IProps) => {
     const currentLayout = useSelector(getCurrentLayout);
@@ -132,6 +138,13 @@ const VirtualScreenshareParticipant = ({
         muted = { true }
         style = { styles.video }
         videoTrack = { videoTrack } />;
+
+    const pipCamera = cameraTrack && <VideoTrack
+        className = 'pip-camera-track'
+        style = { {} }
+        id = { `pipCamera_${participantId}` }
+        muted = { true }
+        videoTrack = { cameraTrack } />;
 
     const { cx } = useStyles();
 
@@ -154,6 +167,11 @@ const VirtualScreenshareParticipant = ({
             ) }
             style = { styles.thumbnail }>
             {video}
+            {pipCamera && (
+                <div className = 'pip-camera-overlay'>
+                    {pipCamera}
+                </div>
+            )}
             <div className = { classes?.containerBackground } />
             <div
                 className = { cx(classes?.indicatorsContainer,
