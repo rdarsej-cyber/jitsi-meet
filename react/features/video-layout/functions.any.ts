@@ -62,6 +62,18 @@ export function getCurrentLayout(state: IReduxState) {
  * @returns {boolean} True if tile view should be displayed.
  */
 export function shouldDisplayTileView(state: IReduxState) {
+    // --- FORCE PIN: If a screenshare is force-pinned by moderator, exit tile view ---
+    const forcePinId = state['features/force-pin']?.participantId;
+
+    if (forcePinId) {
+        return false;
+    }
+    // --- END FORCE PIN ---
+
+    // --- FORCE TILE VIEW: Always display tile view ---
+    return true;
+    // --- END FORCE TILE VIEW ---
+
     const tileViewDisabled = isTileViewModeDisabled(state);
 
     if (tileViewDisabled) {

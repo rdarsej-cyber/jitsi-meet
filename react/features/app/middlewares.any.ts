@@ -29,6 +29,7 @@ import '../dynamic-branding/middleware';
 import '../etherpad/middleware';
 import '../filmstrip/middleware';
 import '../follow-me/middleware';
+import '../force-pin/middleware';
 import '../invite/middleware';
 import '../jaas/middleware';
 import '../large-video/middleware';

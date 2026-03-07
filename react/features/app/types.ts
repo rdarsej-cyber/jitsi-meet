@@ -132,7 +132,8 @@ export interface IReduxState {
     'features/feedback': IFeedbackState;
     'features/file-sharing': IFileSharingState;
     'features/filmstrip': IFilmstripState;
-    'features/follow-me': IFollowMeState;
+    'features/follow-me': any;
+    'features/force-pin': IFollowMeState;
     'features/gifs': IGifsState;
     'features/google-api': IGoogleApiState;
     'features/invite': IInviteState;

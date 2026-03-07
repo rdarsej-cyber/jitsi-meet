@@ -13,6 +13,7 @@ import PinnedIndicator from './PinnedIndicator';
 import RaisedHandIndicator from './RaisedHandIndicator';
 import StatusIndicators from './StatusIndicators';
 import VideoMenuTriggerButton from './VideoMenuTriggerButton';
+import ForcePinButton from '../../../force-pin/components/web/ForcePinButton';
 
 interface IProps {
 
@@ -102,6 +103,9 @@ const ThumbnailTopIndicators = ({
     if (isVirtualScreenshareParticipant) {
         return (
             <div className = { styles.container }>
+                <ForcePinButton
+                    isHovered = { isHovered }
+                    participantId = { participantId } />
                 {!_connectionIndicatorDisabled
                     && <ConnectionIndicator
                         alwaysVisible = { showConnectionIndicator }

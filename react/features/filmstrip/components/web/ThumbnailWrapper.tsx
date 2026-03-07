@@ -193,7 +193,9 @@ function _mapStateToProps(state: IReduxState, ownProps: { columnIndex: number;
         let horizontalOffset, thumbnailWidth;
         const { iAmRecorder, disableTileEnlargement } = state['features/base/config'];
         const { localScreenShare } = state['features/base/participants'];
-        const localParticipantsLength = localScreenShare ? 2 : 1;
+        // --- PiP CAMERA FEATURE: When local user is screen sharing, hide their camera tile ---
+        // Camera is shown as PiP overlay on the screen share tile instead.
+        const localParticipantsLength = localScreenShare ? 1 : 1;
 
         let participantsLength;
 
@@ -260,21 +262,21 @@ function _mapStateToProps(state: IReduxState, ownProps: { columnIndex: number;
             : index;
 
         if (!iAmRecorder && index === localIndex) {
+            // --- PiP CAMERA FEATURE: Show screen share tile instead of camera when sharing ---
+            if (localScreenShare) {
+                return {
+                    _disableSelfView: disableSelfView,
+                    _filmstripType: filmstripType,
+                    _isLocalScreenShare: true,
+                    _participantID: localScreenShare?.id,
+                    _horizontalOffset: horizontalOffset,
+                    _thumbnailWidth: thumbnailWidth
+                };
+            }
             return {
                 _disableSelfView: disableSelfView,
                 _filmstripType: filmstripType,
                 _participantID: 'local',
-                _horizontalOffset: horizontalOffset,
-                _thumbnailWidth: thumbnailWidth
-            };
-        }
-
-        if (!iAmRecorder && localScreenShare && index === localScreenShareIndex) {
-            return {
-                _disableSelfView: disableSelfView,
-                _filmstripType: filmstripType,
-                _isLocalScreenShare: true,
-                _participantID: localScreenShare?.id,
                 _horizontalOffset: horizontalOffset,
                 _thumbnailWidth: thumbnailWidth
             };
