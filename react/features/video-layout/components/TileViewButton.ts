@@ -88,7 +88,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const { visible = enabled } = ownProps;
 
     return {
-        _tileViewEnabled: shouldDisplayTileView(state),
+        _tileViewEnabled: shouldDisplayTileView(state) ?? false,
         visible
     };
 }

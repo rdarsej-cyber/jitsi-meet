@@ -239,7 +239,7 @@ export class LargeVideoBackground extends Component<IProps> {
  */
 function _mapStateToProps(state: IReduxState) {
     return {
-        _shouldDisplayTileView: shouldDisplayTileView(state)
+        _shouldDisplayTileView: shouldDisplayTileView(state) ?? false
     };
 }
 

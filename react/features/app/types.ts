@@ -42,6 +42,7 @@ import { IFeedbackState } from '../feedback/reducer';
 import { IFileSharingState } from '../file-sharing/reducer';
 import { IFilmstripState } from '../filmstrip/reducer';
 import { IFollowMeState } from '../follow-me/reducer';
+import { IForcePinState } from '../force-pin/reducer';
 import { IGifsState } from '../gifs/reducer';
 import { IGoogleApiState } from '../google-api/reducer';
 import { IInviteState } from '../invite/reducer';
@@ -133,7 +134,7 @@ export interface IReduxState {
     'features/file-sharing': IFileSharingState;
     'features/filmstrip': IFilmstripState;
     'features/follow-me': any;
-    'features/force-pin': IFollowMeState;
+    'features/force-pin': IForcePinState;
     'features/gifs': IGifsState;
     'features/google-api': IGoogleApiState;
     'features/invite': IInviteState;

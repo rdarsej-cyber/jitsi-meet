@@ -31,7 +31,7 @@ export function forcePinScreenshare(participantId?: string | null) {
             dispatch({ type: SET_FORCE_PIN, participantId });
             dispatch(pinParticipant(participantId));
         } else {
-            conference.removeCommand(FORCE_PIN_COMMAND);
+            (conference as any).removeCommand(FORCE_PIN_COMMAND);
             conference.sendCommandOnce(FORCE_PIN_COMMAND, {
                 attributes: { off: 'true' }
             });
